@@ -1,0 +1,66 @@
+-- Load Kavo UI
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/o7-Fire/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("🌱 Grow a Garden Spawner", "DarkTheme")
+
+-- Load the Spawner script
+local Spawner = loadstring(game:HttpGet("https://codeberg.org/DarkBackup/script/raw/branch/main/loadstring"))()
+Spawner.Load()
+
+-- Get pet and seed lists
+local pets = Spawner.GetPets()
+local seeds = Spawner.GetSeeds()
+
+-- Tabs
+local petTab = Window:NewTab("Pets")
+local petSection = petTab:NewSection("Spawn Pets")
+
+local seedTab = Window:NewTab("Seeds")
+local seedSection = seedTab:NewSection("Spawn Seeds")
+
+local eggTab = Window:NewTab("Eggs")
+local eggSection = eggTab:NewSection("Spawn Eggs")
+
+local spinTab = Window:NewTab("Spin")
+local spinSection = spinTab:NewSection("Spin Seeds")
+
+-- Pet Spawner
+local selectedPet = pets[1]
+local petKG = 1
+local petAge = 1
+
+petSection:NewDropdown("Select Pet", pets, function(pet)
+    selectedPet = pet
+end)
+
+petSection:NewSlider("KG", "Select weight", 100, 1, function(value)
+    petKG = value
+end)
+
+petSection:NewSlider("Age", "Select age", 100, 1, function(value)
+    petAge = value
+end)
+
+petSection:NewButton("Spawn Pet", "Spawns the selected pet", function()
+    Spawner.SpawnPet(selectedPet, petKG, petAge)
+end)
+
+-- Seed Spawner
+local selectedSeed = seeds[1]
+
+seedSection:NewDropdown("Select Seed", seeds, function(seed)
+    selectedSeed = seed
+end)
+
+seedSection:NewButton("Spawn Seed", "Spawns the selected seed", function()
+    Spawner.SpawnSeed(selectedSeed)
+end)
+
+-- Egg Spawner
+eggSection:NewTextBox("Egg Name", "Enter egg name", function(egg)
+    Spawner.SpawnEgg(egg)
+end)
+
+-- Spin Seed
+spinSection:NewTextBox("Spin Seed Name", "Enter seed name to spin", function(spin)
+    Spawner.Spin(spin)
+end)
